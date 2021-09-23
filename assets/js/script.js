@@ -3,6 +3,14 @@ var mainPage = document.getElementById("main-page");
 var quiz = document.getElementById("quiz");
 var results = document.getElementById("results");
 var highscores = document.getElementById("highscores");
+var question = document.getElementById("question");
+var button0 = document.getElementById("choice0");
+var button1 = document.getElementById("choice1");
+var button2 = document.getElementById("choice2");
+var button3 = document.getElementById("choice3");
+var counter = 0;
+
+
 //Set starting score to have a baseline for finding the score a player earns
 var score = 0;
 var quizQuestions = [
@@ -89,31 +97,48 @@ function startClick () {
       }, 1000);
     }
 
+    function generateQuestions() {
+        question.textContent = quizQuestions[counter].question;
+        button0.textContent = quizQuestions[counter].answers.a;
+        button1.textContent = quizQuestions[counter].answers.b;
+        button2.textContent = quizQuestions[counter].answers.c;
+        button3.textContent = quizQuestions[counter].answers.d;
+    }
+
+    generateQuestions();
+
+    var quizButtons = document.getElementsByClassName("quizButtons");
+    
+    quizButtons.addEventListener("click", nextQuestion);
+
+    function nextQuestion(){
+        console.log("This button works");
+    }
 
     //Generate the quiz questions
-    function generateQuiz(){
-        for (i=0; i <= quizQuestions.length; i++) {
-            //Show the first question
-            var question = document.getElementById("question");
-            question.textContent = quizQuestions[0].question;
+    
+    // for (i=0; i <= quizQuestions.length; i++) {
+    //     //Show the first question
+    //     var question = document.getElementById("question");
+    //     question.textContent = quizQuestions[0].question;
 
 
-            var answerButtons = document.querySelector('.quizButton');
-            answerButtons.onclick = function() {
-	    
-            }
-            //show if it is right or wrong, and take time off the clock if wrong
-            // if (quizQuestions[0].correctAnswer)
-        
-        }
-    } 
+    //     var answerButtons = document.querySelector('.quizButton');
+    //     answerButtons.onclick = function() {
+    
+    //     }
+    //     //show if it is right or wrong, and take time off the clock if wrong
+    //     // if (quizQuestions[0].correctAnswer)
+    
+    // }
+     
 
     function scoreQuiz() {
         var finalScore = document.getElementById("finalScore");
         finalScore.innerHTML = "Your final score is " + score + "."
     }
 
-    generateQuiz();
+
 
 }
 
