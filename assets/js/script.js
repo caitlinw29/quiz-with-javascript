@@ -130,14 +130,14 @@ function nextQuestion() {
         correct.className = "";
         setTimeout(function(){
             //hide it again
-            correct.className = "response"
+            correct.className = "hidden"
         }, 1000)
     } else {
         //have wrong show up for one second
         wrong.className = "";
         setTimeout(function(){
             //hide it again
-            wrong.className = "response"
+            wrong.className = "hidden"
         }, 1000)
         //take 10 seconds off the clock
         secondsLeft -= 10;

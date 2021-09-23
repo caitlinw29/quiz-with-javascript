@@ -55,8 +55,7 @@ button:active {
     box-shadow: 0px 0px 10px #089ad4;
 }
 
-.hidden, 
-.response {
+.hidden {
     display: none; 
 }
 
