@@ -3,58 +3,62 @@ var mainPage = document.getElementById("main-page");
 var quiz = document.getElementById("quiz");
 var results = document.getElementById("results");
 var highscores = document.getElementById("highscores");
+//Set starting score to have a baseline for finding the score a player earns
+var score = 0;
 var quizQuestions = [
 	{
 		question: "Commonly used data types DO NOT include:",
 		answers: {
-			a: 'strings',
-			b: 'booleans',
-			c: 'alerts',
-            d: 'numbers'
+			a: '1. strings',
+			b: '2. booleans',
+			c: '3. alerts',
+            d: '4. numbers'
 		},
 		correctAnswer: 'c'
 	},
 	{
 		question: "The condition in an if/else statement is enclosed within _____.",
 		answers: {
-			a: 'quotes',
-			b: 'curly brackets',
-			c: 'parentheses',
-            d: 'square brackets'
+			a: '1. quotes',
+			b: '2. curly brackets',
+			c: '3. parentheses',
+            d: '4. square brackets'
 		},
 		correctAnswer: 'c'
 	},
     {
 		question: "Arrays in JavaScript can be used to store _____.",
 		answers: {
-			a: 'numbers and strings',
-			b: 'other arrays',
-			c: 'booleans',
-            d: 'all of the above'
+			a: '1. numbers and strings',
+			b: '2. other arrays',
+			c: '3. booleans',
+            d: '4. all of the above'
 		},
 		correctAnswer: 'd'
 	},
     {
 		question: "String values must be enclosed within ______ when being assigned to variables.",
 		answers: {
-			a: 'commas',
-			b: 'curly brackets',
-			c: 'quotes',
-            d: 'parentheses'
+			a: '1. commas',
+			b: '2. curly brackets',
+			c: '3. quotes',
+            d: '4. parentheses'
 		},
 		correctAnswer: 'c'
 	},
     {
 		question: "A very useful tool used during development and debugging for printing content to the debugger is:",
 		answers: {
-			a: 'JavaScript',
-			b: 'terminal/bash',
-			c: 'for loops',
-            d: 'console.log'
+			a: '1. JavaScript',
+			b: '2. terminal/bash',
+			c: '3. for loops',
+            d: '4. console.log'
 		},
 		correctAnswer: 'd'
 	}
 ];
+
+
 
 function startClick () {
     setTime();
@@ -62,10 +66,11 @@ function startClick () {
     mainPage.className = "hidden";
     quiz.className = "";
 
-    //Start timer, and set an if statement to end the game if the timer runs out
+    
     var timeEl = document.querySelector("#timer");
     var secondsLeft = 76;
 
+    //Start timer, and set an if statement to end the game if the timer runs out
     function setTime() {
       // Sets interval in variable
       var timerInterval = setInterval(function() {
@@ -73,41 +78,40 @@ function startClick () {
         timeEl.textContent = "Time: " + secondsLeft;
     
         if(secondsLeft === 0) {
-          // Stops execution of action at set interval
-          clearInterval(timerInterval);
-          quiz.className = "hidden";
-          results.className = "";
-          //Call function to score quiz
-          scoreQuiz();
-        }
+            // Stops execution of action, hides the quiz and shows the results
+            clearInterval(timerInterval);
+            quiz.className = "hidden";
+            results.className = "";
+            //Call function to score quiz
+            scoreQuiz();
+            }
 
       }, 1000);
     }
 
+
     //Generate the quiz questions
-    function generateQuiz(questions, quizContainer, resultsContainer, buttonPress){
+    function generateQuiz(){
         for (i=0; i <= quizQuestions.length; i++) {
-            //Show the questions
-            function showQuestions(questions, quizContainer){
-                // code will go here
+            //Show the first question
+            var question = document.getElementById("question");
+            question.textContent = quizQuestions[0].question;
+
+
+            var answerButtons = document.querySelector('.quizButton');
+            answerButtons.onclick = function() {
+	    
             }
-            
             //show if it is right or wrong, and take time off the clock if wrong
-            function showResults(questions, quizContainer, resultsContainer){
-                // code will go here
-            }
+            // if (quizQuestions[0].correctAnswer)
         
-            // show the questions
-            showQuestions(questions, quizContainer);
-        
-            // when user clicks a choice, show next page
-            buttonPress.onclick = function(){
-                //if questions remain, show question.
-                //if no questions remain, show results and stop timer
-                showResults(questions, quizContainer, resultsContainer);
-            }
         }
     } 
+
+    function scoreQuiz() {
+        var finalScore = document.getElementById("finalScore");
+        finalScore.innerHTML = "Your final score is " + score + "."
+    }
 
     generateQuiz();
 

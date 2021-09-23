@@ -21,7 +21,6 @@ body {
 
 div {
     margin: 20px auto;
-    padding: 20px;
     width: 500px;
     text-align: left;
 }
@@ -58,7 +57,11 @@ button:active {
 
 .hidden, 
 .response {
-    /* display: none; */
+    display: none; 
+}
+
+.quizButtons button {
+    margin: 2px;
 }
 
 .response {
@@ -67,20 +70,17 @@ button:active {
     font-style: italic;
 }
 
-
-#quiz ul li {
-    text-decoration: none;
-    margin: 5px;
-    background-color: #f1e5fb;
-}
-
 #results {
     line-height: 2.5;
     font-size: 18px;
 }
 
-#results h2 {
+h2 {
     font-size: 150%;
+}
+
+#highscores ol li {
+    background-color: #f1e5fb;
 }
 
  
