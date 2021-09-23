@@ -64,7 +64,7 @@ button:active {
     margin: 2px;
 }
 
-.response {
+#correct, #wrong {
     border-top: 2px solid #f1e5fb; 
     color: rgba(87, 85, 88, 0.6); 
     font-style: italic;
