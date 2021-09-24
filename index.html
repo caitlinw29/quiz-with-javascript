@@ -10,7 +10,7 @@
     </head>
     <body>
         <header>
-            <a href="#highscores">View Highscores</a>
+            <a href="#" id="viewScores">View Highscores</a>
             <p id="timer">Time: 0</p>
         </header>
 
@@ -38,10 +38,10 @@
         <div id="results" class="hidden">
             <h2>All done!</h2>
             <p id="finalScore">Your final score is</p>
-            <form action="/action_page.php">
+            <form>
                 <label for="initials">Enter initials: </label>
                 <input type="text" id="initials" name="initials"> 
-                <button>Submit</button>
+                <button id="submit-button">Submit</button>
             </form>
         </div>
 
@@ -49,8 +49,8 @@
             <h1>Highscores</h1>
             <ol>
             </ol>
-            <button>Go Back</button>
-            <button>Clear Highscores</button>
+            <button id="go-back">Go Back</button>
+            <button id="clear">Clear Highscores</button>
         </div>
 
         <script src="./assets/js/script.js" async defer></script>
