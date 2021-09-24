@@ -22,16 +22,25 @@ var secondsLeft = 76;
 var timerInterval;
 //Submit initials
 var submitInitials = document.getElementById("submit-button");
- //set up a blank array to hold the highscores
- var highScores = [];
- //Pull user input to an initials variable and score
- var initials = document.getElementById("initials").value;
- var score = secondsLeft;
- //Put the initials and score into a newScore object
- var newScore = {
-     initials: initials,
-     score: score
- };
+//set up a blank array to hold the highscores
+var highScores = [];
+//Pull user input to an initials variable and score
+var initials = document.getElementById("initials").value;
+var score = secondsLeft;
+//Put the initials and score into a newScore object
+var newScore = {
+    initials: initials,
+    score: score
+};
+//Set variables to target the list
+var ol = document.getElementById("scoreList");
+var li = document.getElementsByTagName("li");
+//Go back button
+var goBack = document.getElementById("go-back");
+//High score link in header
+var highScoreLink = document.getElementById("viewScores");
+//Clear HighScores Button
+var clearBtn = document.getElementById("clear");
 
 var quizQuestions = [
 	{
@@ -86,6 +95,23 @@ var quizQuestions = [
 	}
 ];
 
+//on click of start quiz button, run the startClick function
+startButton.addEventListener("click", startClick);
+
+//call function to generate the questions
+generateQuestions();
+
+//on click of the submit button, show high scores
+submitInitials.onclick = showScores;
+
+//on click of the goback button, call the replay function
+goBack.onclick = replay;
+
+//on click of the high score link, call function linkToScores
+highScoreLink.onclick = linkToScores;
+
+//on click of clear button, call the clearScores function
+clearBtn.onclick = clearScores;
 
 function startClick () {
     //set timer to start running
@@ -95,9 +121,6 @@ function startClick () {
     quiz.className = "";
 }
  
-//on click of start quiz button, run the startClick function
-startButton.addEventListener("click", startClick);
-
 //Set-up timer to count down by one, and set an if statement to end the game if the timer runs out
 function setTime() {
 
@@ -136,9 +159,6 @@ function generateQuestions() {
     button3.setAttribute("value", quizQuestions[counter].answers.d);
 
 }
-
-//call function to generate the questions
-generateQuestions();
 
 //If correct, show 'correct' response, and move to next question.
 //If wrong, subtract ten seconds from clock, show 'wrong' response, and move to next question. 
@@ -189,12 +209,8 @@ function scoreQuiz() {
     results.className = "";
 }
 
-//on click of the submit button, show high scores
-submitInitials.onclick = showScores;
-
 function showScores(){
-    console.log("This shows the scores");
-    event.preventDefault();
+    console.log("Hello");
 
     //Hide results and show highscores
     results.className = "hidden";
@@ -212,22 +228,13 @@ function showScores(){
     //Sort scores to be high to low
     // scores.sort(function(a, b){return a-b});
     //Add scores to li on page
-    var ol = document.getElementById("scoreList");
-    var li = document.getElementsByName(li);
-    for (i=0; i <= 10; i++) {
-        li.textContent = score[i];
-        ol.appendChild(li);
+    for (i=0; i <= 4; i++) {
+        li.textContent = highScores[i];
     }
-    // li.textContent = scores;
-    // ol.appendChild(li);
 
 }
 
 //Extra buttons and links
-//Go back button
-var goBack = document.getElementById("go-back");
-goBack.onclick = replay;
-
 function replay() {
     //hide highscores and show main page
     highScoresPage.className = "hidden";
@@ -239,10 +246,8 @@ function replay() {
 }
 
 //View HighScores from any part of the quiz
-var highScoreLink = document.getElementById("viewScores");
-highScoreLink.onclick = showScores;
-
-function showScores(){
+function linkToScores(){
+    console.log("This is showScores");
     //show highscores
     highScoresPage.className = "";
     //clear everything else
@@ -253,18 +258,7 @@ function showScores(){
     clearInterval(timerInterval);
 }
 
-//Clear HighScores Button
-var clearBtn = document.getElementById("clear");
-clearBtn.onclick = clearScores;
-
+//Clear the highscores from the page
 function clearScores() {
     localStorage.clear();
 }
-
-
-
-
-
-
-
-
