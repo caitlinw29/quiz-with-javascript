@@ -22,6 +22,16 @@ var secondsLeft = 76;
 var timerInterval;
 //Submit initials
 var submitInitials = document.getElementById("submit-button");
+ //set up a blank array to hold the highscores
+ var highScores = [];
+ //Pull user input to an initials variable and score
+ var initials = document.getElementById("initials").value;
+ var score = secondsLeft;
+ //Put the initials and score into a newScore object
+ var newScore = {
+     initials: initials,
+     score: score
+ };
 
 var quizQuestions = [
 	{
@@ -182,45 +192,38 @@ function scoreQuiz() {
 //on click of the submit button, show high scores
 submitInitials.onclick = showScores;
 
-function showScores(event){
+function showScores(){
+    console.log("This shows the scores");
     event.preventDefault();
 
     //Hide results and show highscores
     results.className = "hidden";
     highScoresPage.className = "";
 
-    //set up a blank array to hold the scores
-    var highScores = [];
-
-    //Pull user input to an initials variable
-    var initials = document.getElementById("initials");
-    var score = secondsLeft;
-    //Put the initials and score into a newScore object
-    var newScore = {
-        initial: initials,
-        score: score
-    }
     //Push the newScore into highScores
-    highScores.push(newScore)
+    highScores.push(newScore);
 
     //Put high scores into local storage
-    localStorage.setItem("highScores", JSON.stringify(highScores))
+    localStorage.setItem("highScores", JSON.stringify(highScores));
 
     //Print scores to the page in order from highest score to lowest
     //Pull scores from storage
-    var scores = JSON.parse(localStorage.getItem("highScores"));
+    JSON.parse(localStorage.getItem("highScores"));
     //Sort scores to be high to low
-    scores.sort(function(a, b){return a-b});
+    // scores.sort(function(a, b){return a-b});
     //Add scores to li on page
-    var ol = document.querySelector(ol);
-    var li = document.createElement(li);
+    var ol = document.getElementById("scoreList");
+    var li = document.getElementsByName(li);
     for (i=0; i <= 10; i++) {
         li.textContent = score[i];
-        document.ol.appendChild(li);
+        ol.appendChild(li);
     }
+    // li.textContent = scores;
+    // ol.appendChild(li);
 
 }
 
+//Extra buttons and links
 //Go back button
 var goBack = document.getElementById("go-back");
 goBack.onclick = replay;
@@ -255,7 +258,7 @@ var clearBtn = document.getElementById("clear");
 clearBtn.onclick = clearScores;
 
 function clearScores() {
-    highScores = [];
+    localStorage.clear();
 }
 
 
