@@ -23,23 +23,11 @@ var timerInterval;
 //Submit initials
 var submitInitials = document.getElementById("submit-button");
 //set up a blank array to hold the highscores
-var highScores = [];
-//Pull user input to an initials variable and score
-var initials = document.getElementById("initials").value;
-var score = secondsLeft;
-//Put the initials and score into a newScore object
-var newScore = {
-    initials: initials,
-    score: score
-};
-//Set variables to target the list
-var ol = document.getElementById("scoreList");
-var li = document.getElementsByTagName("li");
+// var highScores = [];
 //Go back button
 var goBack = document.getElementById("go-back");
 //High score link in header
 var highScoreLink = document.getElementById("viewScores");
-//Clear HighScores Button
 var clearBtn = document.getElementById("clear");
 
 var quizQuestions = [
@@ -210,7 +198,16 @@ function scoreQuiz() {
 }
 
 function showScores(){
-    console.log("Hello");
+    var highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+    
+    //Pull user input to an initials variable 
+    var initials = document.getElementById("initials").value;
+    var score = secondsLeft;
+    //Put the initials and score into a newScore object
+    var newScore = {
+        initials: initials,
+        score: score
+    };
 
     //Hide results and show highscores
     results.className = "hidden";
@@ -221,15 +218,23 @@ function showScores(){
 
     //Put high scores into local storage
     localStorage.setItem("highScores", JSON.stringify(highScores));
+    console.log(highScores);
 
     //Print scores to the page in order from highest score to lowest
     //Pull scores from storage
-    JSON.parse(localStorage.getItem("highScores"));
+    // var highScoreFromStorage = JSON.parse(localStorage.getItem("highScores"));
     //Sort scores to be high to low
     // scores.sort(function(a, b){return a-b});
     //Add scores to li on page
-    for (i=0; i <= 4; i++) {
-        li.textContent = highScores[i];
+    //Set variables to target the list
+    // console.log(highScoreFromStorage);
+    for (i=0; i <= highScores.length; i++) {
+        console.log(highScores[i]);
+        var li = document.createElement("li");
+        var ol = document.getElementById("scoreList");
+        
+        li.innerHTML = highScores[i].initials + " - " + highScores[i].score;
+        ol.append(li);
     }
 
 }
@@ -247,7 +252,7 @@ function replay() {
 
 //View HighScores from any part of the quiz
 function linkToScores(){
-    console.log("This is showScores");
+    
     //show highscores
     highScoresPage.className = "";
     //clear everything else
@@ -258,7 +263,7 @@ function linkToScores(){
     clearInterval(timerInterval);
 }
 
-//Clear the highscores from the page
-function clearScores() {
-    localStorage.clear();
+function clearScores(){
+    window.localStorage.removeItem("highScores");
+    window.location.reload();
 }
