@@ -29,6 +29,9 @@ var goBack = document.getElementById("go-back");
 //High score link in header
 var highScoreLink = document.getElementById("viewScores");
 var clearBtn = document.getElementById("clear");
+var score;
+var highScores;
+var ol = document.getElementById("scoreList");
 
 var quizQuestions = [
 	{
@@ -90,7 +93,7 @@ startButton.addEventListener("click", startClick);
 generateQuestions();
 
 //on click of the submit button, show high scores
-submitInitials.onclick = showScores;
+submitInitials.onclick = saveScore;
 
 //on click of the goback button, call the replay function
 goBack.onclick = replay;
@@ -170,6 +173,10 @@ function nextQuestion() {
         }, 1000)
         //take 10 seconds off the clock
         secondsLeft -= 10;
+        //if taking off ten will make the score negative, give it one last second to count off so final result is 0
+        if (secondsLeft <= 0){
+            secondsLeft = 1;
+        }
     }
 
     //increment by one no matter what, to cycle through the questions
@@ -187,9 +194,9 @@ function nextQuestion() {
 
 function scoreQuiz() {
     //score is the time left on the clock
-    var score = secondsLeft;
+    score = secondsLeft;
     var finalScore = document.getElementById("finalScore");
-    finalScore.innerHTML = "Your final score is " + score + "."
+    finalScore.innerHTML = score;
 
     // Stops execution of action, hides the quiz and shows the results
     clearInterval(timerInterval);
@@ -197,46 +204,77 @@ function scoreQuiz() {
     results.className = "";
 }
 
-function showScores(){
-    var highScores = JSON.parse(localStorage.getItem("highScores")) || [];
-    
-    //Pull user input to an initials variable 
-    var initials = document.getElementById("initials").value;
-    var score = secondsLeft;
-    //Put the initials and score into a newScore object
-    var newScore = {
-        initials: initials,
-        score: score
-    };
+function saveScore(){
+    highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+     //Pull user input to an initials variable 
+     var initials = document.getElementById("initials").value;
+     score = secondsLeft;
+     //Put the initials and score into a newScore object
+     var newScore = {
+         initials: initials,
+         score: score
+     };
+     //push score object into highScores Array
+    highScores.push(newScore);
+    //Put high scores into local storage
+    localStorage.setItem("highScores", JSON.stringify(highScores));
+   
+    showScores();
+}
 
+function showScores(){
     //Hide results and show highscores
     results.className = "hidden";
     highScoresPage.className = "";
-
-    //Push the newScore into highScores
-    highScores.push(newScore);
-
-    //Put high scores into local storage
-    localStorage.setItem("highScores", JSON.stringify(highScores));
-    console.log(highScores);
-
-    //Print scores to the page in order from highest score to lowest
-    //Pull scores from storage
-    // var highScoreFromStorage = JSON.parse(localStorage.getItem("highScores"));
-    //Sort scores to be high to low
-    // scores.sort(function(a, b){return a-b});
-    //Add scores to li on page
-    //Set variables to target the list
-    // console.log(highScoreFromStorage);
+    //clear old list
+    removeAllChildNodes(ol);
+    //for each score, create a li and append to list
     for (i=0; i <= highScores.length; i++) {
-        console.log(highScores[i]);
+        
         var li = document.createElement("li");
-        var ol = document.getElementById("scoreList");
         
         li.innerHTML = highScores[i].initials + " - " + highScores[i].score;
-        ol.append(li);
+        ol.appendChild(li);
+        
     }
+    sortList();
+}
 
+function sortList() {
+    var i, switching, b, shouldSwitch;
+    switching = true;
+    /* Make a loop that will continue until
+    no switching has been done: */
+    while (switching) {
+      // Start by saying: no switching is done:
+      switching = false;
+      b = ol.getElementsByTagName("LI");
+      // Loop through all list items:
+      for (i = 0; i < (b.length - 1); i++) {
+        // Start by saying there should be no switching:
+        shouldSwitch = false;
+        /* Check if the next item should
+        switch place with the current item: */
+        if (b[i].charAt(5) > b[i + 1].charAt(5)) {
+          /* If next item is alphabetically lower than current item,
+          mark as a switch and break the loop: */
+          shouldSwitch = true;
+          break;
+        }
+      }
+      if (shouldSwitch) {
+        /* If a switch has been marked, make the switch
+        and mark the switch as done: */
+        b[i].parentNode.insertBefore(b[i + 1], b[i]);
+        switching = true;
+      }
+    }
+  }
+
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
 }
 
 //Extra buttons and links
@@ -254,7 +292,7 @@ function replay() {
 function linkToScores(){
     
     //show highscores
-    highScoresPage.className = "";
+    highScoresPage.classList.remove("hidden");
     //clear everything else
     mainPage.className = "hidden";
     quiz.className = "hidden";
