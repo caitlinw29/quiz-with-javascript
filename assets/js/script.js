@@ -223,9 +223,12 @@ function saveScore(){
 }
 
 function showScores(){
-    //Hide results and show highscores
+    //Hide results and show highscores, hide other elements in case of clicking view scores link
     results.className = "hidden";
     highScoresPage.className = "";
+    mainPage.className = "hidden";
+    quiz.className = "hidden";
+    
     //clear old list
     removeAllChildNodes(ol);
     //for each score, create a li and append to list
@@ -271,6 +274,7 @@ function sortList() {
     }
   }
 
+  //remove the children of the ol to clear the old list
 function removeAllChildNodes(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
@@ -290,15 +294,11 @@ function replay() {
 
 //View HighScores from any part of the quiz
 function linkToScores(){
-    
-    //show highscores
-    highScoresPage.classList.remove("hidden");
-    //clear everything else
-    mainPage.className = "hidden";
-    quiz.className = "hidden";
-    results.className = "hidden";
     //stop timer
     clearInterval(timerInterval);
+    //grab scores
+    highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+    showScores();
 }
 
 function clearScores(){
