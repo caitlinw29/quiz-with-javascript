@@ -7,6 +7,7 @@ var results = document.getElementById("results");
 var highScoresPage = document.getElementById("highscores");
 //question and answers
 var question = document.getElementById("question");
+var quizButtonDiv = document.getElementById("quizButtonDiv");
 var button0 = document.getElementById("choice0");
 var button1 = document.getElementById("choice1");
 var button2 = document.getElementById("choice2");
@@ -32,6 +33,7 @@ var clearBtn = document.getElementById("clear");
 var score;
 var highScores;
 var ol = document.getElementById("scoreList");
+let target;
 
 var quizQuestions = [
 	{
@@ -137,10 +139,14 @@ function generateQuestions() {
     button3.textContent = quizQuestions[counter].answers.d;
     
     //on click of any choice button, run nextQuestion function
-    button0.onclick = nextQuestion;
-    button1.onclick = nextQuestion;
-    button2.onclick = nextQuestion;
-    button3.onclick = nextQuestion;
+    quizButtonDiv.onclick = function(event){
+        target = event.target;
+        if (target.className !== "quizButtons") {
+            return;
+        } else {
+            nextQuestion();
+        }
+    }
 
     //set the value of the button to be the answer for that button
     //used later to compare value of button to correct answer 
@@ -148,15 +154,13 @@ function generateQuestions() {
     button1.setAttribute("value", quizQuestions[counter].answers.b);
     button2.setAttribute("value", quizQuestions[counter].answers.c);
     button3.setAttribute("value", quizQuestions[counter].answers.d);
-
 }
 
 //If correct, show 'correct' response, and move to next question.
 //If wrong, subtract ten seconds from clock, show 'wrong' response, and move to next question. 
 function nextQuestion() {
-
     //if the value matches the correct answer choice for this question...
-    if (this.value === quizQuestions[counter].correctAnswer) {
+    if (target.value === quizQuestions[counter].correctAnswer) {
         //have correct show up for one second
         correct.className = "";
         setTimeout(function(){
@@ -184,6 +188,8 @@ function nextQuestion() {
 
     //if out of questions, scorequiz will run after a one-second timeout
     if (counter === quizQuestions.length) {
+        //clear interval now so that user doesn't lose a point for the timeout
+        clearInterval(timerInterval);
         //timeout allows a second for the last question to show a response before showing final score
         setTimeout(scoreQuiz, 1000);
     } else {
@@ -199,7 +205,6 @@ function scoreQuiz() {
     finalScore.innerHTML = score;
 
     // Stops execution of action, hides the quiz and shows the results
-    clearInterval(timerInterval);
     quiz.className = "hidden";
     results.className = "";
 }
