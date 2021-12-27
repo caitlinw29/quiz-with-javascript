@@ -206,19 +206,20 @@ function scoreQuiz() {
 
 function saveScore(){
     highScores = JSON.parse(localStorage.getItem("highScores")) || [];
-     //Pull user input to an initials variable 
-     var initials = document.getElementById("initials").value;
-     score = secondsLeft;
-     //Put the initials and score into a newScore object
-     var newScore = {
-         initials: initials,
-         score: score
-     };
-     //push score object into highScores Array
+    //Pull user input to an initials variable 
+    var initials = document.getElementById("initials").value;
+    score = secondsLeft;
+    //Put the initials and score into a newScore object
+    var newScore = {
+        initials: initials,
+        score: score
+    };
+    //push score object into highScores Array
     highScores.push(newScore);
+    //sort the scores from high to low
+    highScores.sort((a, b) => parseFloat(b.score) - parseFloat(a.score));
     //Put high scores into local storage
     localStorage.setItem("highScores", JSON.stringify(highScores));
-   
     showScores();
 }
 
@@ -231,48 +232,13 @@ function showScores(){
     
     //clear old list
     removeAllChildNodes(ol);
-    //for each score, create a li and append to list
+     //for each score, create a li and append to list
     for (i=0; i <= highScores.length; i++) {
-        
         var li = document.createElement("li");
-        
         li.innerHTML = highScores[i].initials + " - " + highScores[i].score;
-        ol.appendChild(li);
-        
+        ol.appendChild(li);  
     }
-    sortList();
 }
-
-function sortList() {
-    var i, switching, b, shouldSwitch;
-    switching = true;
-    /* Make a loop that will continue until
-    no switching has been done: */
-    while (switching) {
-      // Start by saying: no switching is done:
-      switching = false;
-      b = ol.getElementsByTagName("LI");
-      // Loop through all list items:
-      for (i = 0; i < (b.length - 1); i++) {
-        // Start by saying there should be no switching:
-        shouldSwitch = false;
-        /* Check if the next item should
-        switch place with the current item: */
-        if (b[i].charAt(5) > b[i + 1].charAt(5)) {
-          /* If next item is alphabetically lower than current item,
-          mark as a switch and break the loop: */
-          shouldSwitch = true;
-          break;
-        }
-      }
-      if (shouldSwitch) {
-        /* If a switch has been marked, make the switch
-        and mark the switch as done: */
-        b[i].parentNode.insertBefore(b[i + 1], b[i]);
-        switching = true;
-      }
-    }
-  }
 
   //remove the children of the ol to clear the old list
 function removeAllChildNodes(parent) {
